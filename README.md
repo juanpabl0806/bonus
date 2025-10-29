@@ -2,6 +2,7 @@
 #  Juego de Evasión con Hilos, Mutex y Semáforos (Python + Pygame)
 
 Este proyecto implementa un pequeño **juego de evasión** programado en **Python** utilizando **Pygame**, **hilos (threads)**, **mutex (bloqueos)** y **semaforización** para coordinar la creación y movimiento de enemigos de forma segura y controlada.
+<img width="1002" height="790" alt="image" src="https://github.com/user-attachments/assets/38622e1d-2f3a-4eb2-bb8d-ce5e6cc7ee7e" />
 
 ---
 
@@ -34,6 +35,8 @@ import time
 
 -time: gestiona pausas entre eventos (por ejemplo, tiempo entre enemigos).
 
+---
+
 ### 2. Ventana del juego
 
 ```python
@@ -42,6 +45,9 @@ pygame.display.set_caption("Juego de Evasión")
 ```
 Se crea una ventana de 800x600 píxeles con el título del juego.
 También se inicializa el reloj del juego (clock) para controlar los FPS.
+
+---
+
 ### 3. Colores y fuentes
 ```python
 WHITE = (255, 255, 255)
@@ -52,6 +58,9 @@ BACKGROUND = (20, 20, 40)
 font = pygame.font.SysFont("Arial", 30)
 ```
 Se definen los colores en formato RGB y la fuente para mostrar texto (puntuación y vidas).
+
+---
+
 ### 4. Parámetros del jugador y enemigos
 ```python
 player_size = 50
@@ -71,6 +80,9 @@ max_enemies = 20
 -spawn_delay controla cada cuánto se genera un nuevo enemigo.
 
 -max_enemies limita la cantidad máxima de enemigos activos a la vez.
+
+---
+
 ### 5. Variables globales del juego
 ```python
 score = 0
@@ -85,6 +97,9 @@ invulnerable = False
 -running: controla el ciclo principal del juego.
 
 -invulnerable: evita perder múltiples vidas instantáneamente tras un choque.
+
+---
+
 ### 6. Sincronización con Mutex y Semáforo
 ```python
 mutex = threading.Lock()
@@ -102,6 +117,9 @@ Cada vez que se genera un enemigo, el semáforo resta 1 (acquire()),
 y cuando un enemigo desaparece, suma 1 (release()).
 
 Esto asegura que nunca existan más de max_enemies enemigos activos.
+
+---
+
 ### 7. Funciones de dibujo
 ```python
 def draw_player(x, y):
@@ -111,6 +129,9 @@ def draw_enemy(x, y):
     pygame.draw.rect(screen, RED, (x, y, enemy_size, enemy_size))
 ```
 Dibujan el jugador y los enemigos como cuadrados en pantalla.
+
+---
+
 ### 8. Generación de enemigos (hilo 1)
 ```python
 def generar_enemigos():
@@ -129,6 +150,9 @@ def generar_enemigos():
 -Usa el semaforo para no superar el límite de enemigos.
 
 -time.sleep(spawn_delay) controla el intervalo entre spawns.
+
+---
+
 ### 9. Movimiento de enemigos (hilo 2)
 ```python
 def mover_enemigos():
@@ -149,6 +173,9 @@ def mover_enemigos():
 -Si un enemigo sale de la pantalla, se elimina y el jugador gana 1 punto.
 
 -Usa mutex y semaforo para sincronizar la modificación de la lista.
+
+---
+
 ### 10. Hilos en ejecución
 ```python
 t1 = threading.Thread(target=generar_enemigos, daemon=True)
@@ -163,6 +190,9 @@ Se crean dos hilos:
 -t2: los mueve y elimina.
 
 Ambos corren en paralelo al bucle principal del juego.
+
+---
+
 ### 11. Bucle principal del juego
 Controla el movimiento del jugador, las colisiones, y el renderizado:
 ```python
@@ -188,6 +218,9 @@ Cuando un enemigo toca al jugador:
 -Se activa invulnerable para dar un segundo de recuperación.
 
 -Si las vidas llegan a 0, el juego termina.
+
+---
+
 ### 12. Textos y puntuación
 ```python
 score_text = font.render(f"Puntos: {score}", True, WHITE)
@@ -196,6 +229,9 @@ screen.blit(score_text, (10, 10))
 screen.blit(vidas_text, (10, 40))
 ```
 Muestra el puntaje y las vidas en pantalla durante el juego.
+
+---
+
 ### 13. Final del juego
 ```python
 pygame.quit()

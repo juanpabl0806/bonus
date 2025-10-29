@@ -25,6 +25,7 @@ import pygame
 import random
 import threading
 import time
+´´´
 
 -pygame: biblioteca para manejar gráficos y eventos del juego.
 
